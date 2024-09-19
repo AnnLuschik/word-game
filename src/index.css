@@ -3,4 +3,9 @@ body {
   font-family: "VAG World Bold";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #2B344B;
+}
+
+* {
+  box-sizing: border-box;
 }

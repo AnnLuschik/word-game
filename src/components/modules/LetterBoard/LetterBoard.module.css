@@ -1,0 +1,26 @@
+.wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: 400px;
+  max-height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle {
+  position: absolute;
+  width: calc(var(--radius) * 2 + var(--size));
+  height: calc(var(--radius) * 2 + var(--size));
+  border: var(--size) solid #3E4A68;
+  border-radius: 50%;
+}
+
+.letterWrapper {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(var(--x), var(--y));
+}
