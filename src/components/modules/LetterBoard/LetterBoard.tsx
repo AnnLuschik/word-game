@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useMedia from 'react-use/lib/useMedia';
 import { LetterButton } from '@/components/elements/LetterButton';
 import { calculatePosition } from '@/utils/circleUtils';
@@ -9,6 +9,9 @@ interface LetterBoardProps {
 }
 
 export const LetterBoard = ({ letters }: LetterBoardProps) => {
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [selectedLetters, setSelectedLetters] = useState<number[]>([]);
+
   const numLetters = letters.length;
 
   const isMobile = useMedia('(max-width: 480px)');
@@ -16,8 +19,48 @@ export const LetterBoard = ({ letters }: LetterBoardProps) => {
 
   const circleRadius = numLetters > 9 || !isMobile ? 134 : 100;
 
+  const activeWord = selectedLetters.map((i) => letters[i]).join('');
+
+  const handleStartSelection = (index: number) => {
+    if (!selectedLetters.length) {
+      setIsSelecting(true);
+      setSelectedLetters([index]);
+    }
+  };
+
+  const handleContinueSelection = (index: number) => {
+    if (isSelecting) {
+      setSelectedLetters((prevSelectedLetters) => {
+        // Check if the current index is the one previously selected
+        const prevSelectedIndex =
+          prevSelectedLetters[prevSelectedLetters.length - 2];
+
+        if (prevSelectedLetters.length > 1 && prevSelectedIndex === index) {
+          // Remove the last selected letter
+          return prevSelectedLetters.slice(0, -1);
+        }
+
+        // Check if the letter is already selected
+        const isAlreadySelected = prevSelectedLetters.includes(index);
+
+        if (!isAlreadySelected) {
+          // Add the new letter to the selection
+          return [...prevSelectedLetters, index];
+        }
+
+        return prevSelectedLetters;
+      });
+    }
+  };
+
+  const handleEndSelection = () => {
+    setIsSelecting(false);
+    console.log('Entered word:', activeWord);
+    setSelectedLetters([]);
+  };
+
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} onMouseUp={handleEndSelection}>
       <div
         style={
           {
@@ -34,6 +77,8 @@ export const LetterBoard = ({ letters }: LetterBoardProps) => {
           <div
             key={index}
             className={styles.letterWrapper}
+            onMouseDown={() => handleStartSelection(index)}
+            onMouseEnter={() => handleContinueSelection(index)}
             style={
               {
                 '--x': `${x}px`,
@@ -43,7 +88,7 @@ export const LetterBoard = ({ letters }: LetterBoardProps) => {
           >
             <LetterButton
               letter={letter}
-              isActive={true}
+              isActive={selectedLetters.includes(index)}
               isSmall={isSmallVariant}
               onClick={() => ({})}
             />
