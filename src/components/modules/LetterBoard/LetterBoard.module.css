@@ -1,12 +1,11 @@
 .wrapper {
   position: relative;
   width: 100vw;
-  height: 100vh;
   max-width: 400px;
-  max-height: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
+  aspect-ratio: 1;
 }
 
 .circle {

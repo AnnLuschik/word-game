@@ -1,0 +1,21 @@
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  text-transform: uppercase;
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 56px;
+  max-height: 56px;
+  aspect-ratio: 1;
+}
+
+.cell[data-guessed='true'] {
+  background-color: #65BD65;
+  color: white;
+}

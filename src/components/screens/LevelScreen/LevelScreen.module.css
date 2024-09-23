@@ -4,7 +4,6 @@
   align-items: center;
   width: 100vw;
   max-width: 640px;
-  height: 100vh;
   padding: 24px 16px;
 }
 
@@ -22,4 +21,12 @@
 
 .error {
   color: deeppink;
+}
+
+.wordsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 38px;
 }
