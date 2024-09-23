@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { LevelScreen } from '@/components/screens/LevelScreen';
+import { SuccessScreen } from './components/screens/SuccessScreen';
 import { useLevelData } from '@/hooks/useLevelData';
 import './App.css';
 
@@ -23,10 +24,15 @@ function App() {
     return <div className='noData'>Нет данных для отображения.</div>;
   }
 
+  const openNewLevel = () => {
+    setCurrentLevel((prev) => prev + 1);
+    setSuccess(false);
+  };
+
   return (
     <div className='App'>
       {success ? (
-        <div>Success</div>
+        <SuccessScreen level={currentLevel} onClick={openNewLevel} />
       ) : (
         <LevelScreen
           level={currentLevel}
