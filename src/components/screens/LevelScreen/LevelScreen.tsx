@@ -25,11 +25,16 @@ export const LevelScreen = ({ level, words, onSuccess }: LevelScreenProps) => {
     }, 1000);
   }
 
+  const sortedWords = useMemo(
+    () => words.sort((a, b) => a.length - b.length),
+    [words]
+  );
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.title}>Уровень {level}</h1>
       <div className={styles.wordsContainer}>
-        {words.map((word) => (
+        {sortedWords.map((word) => (
           <Word word={word} isGuessed={guessedWords.includes(word)} />
         ))}
       </div>
