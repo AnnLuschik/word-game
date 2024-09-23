@@ -6,9 +6,10 @@ import styles from './LetterBoard.module.css';
 
 interface LetterBoardProps {
   letters: string[];
+  handleGuessWord: (v: string) => void;
 }
 
-export const LetterBoard = ({ letters }: LetterBoardProps) => {
+export const LetterBoard = ({ letters, handleGuessWord }: LetterBoardProps) => {
   const [isSelecting, setIsSelecting] = useState(false);
   const [selectedLetters, setSelectedLetters] = useState<number[]>([]);
 
@@ -55,7 +56,7 @@ export const LetterBoard = ({ letters }: LetterBoardProps) => {
 
   const handleEndSelection = () => {
     setIsSelecting(false);
-    console.log('Entered word:', activeWord);
+    handleGuessWord(activeWord);
     setSelectedLetters([]);
   };
 

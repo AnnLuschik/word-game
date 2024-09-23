@@ -1,40 +1,39 @@
+import { useState, useMemo } from 'react';
 import { LetterBoard } from '@/components/modules/LetterBoard';
 import { Word } from '@/components/modules/Word';
-import { useLevelData } from '@/hooks/useLevelData';
 import { getMinimalLetters } from '@/utils/getMinimalLetters';
 import styles from './LevelScreen.module.css';
 
 interface LevelScreenProps {
   level: number;
+  words: string[];
+  onSuccess: (v: boolean) => void;
 }
 
-export const LevelScreen = ({ level }: LevelScreenProps) => {
-  const getLevelForFetch = (level: number) => ((level - 1) % 3) + 1;
-  const { data, error, loading } = useLevelData(getLevelForFetch(level));
+export const LevelScreen = ({ level, words, onSuccess }: LevelScreenProps) => {
+  const [guessedWords, setGuessedWords] = useState<string[]>([]);
 
-  if (loading) {
-    return <div className={styles.loading}>Загрузка...</div>;
-  }
+  const letters = useMemo(() => getMinimalLetters(words), [words]);
 
-  if (error) {
-    return <div className={styles.error}>Ошибка: {error}</div>;
-  }
+  const handleGuessWord = (word: string) => {
+    setGuessedWords((prev) => [...prev, word]);
+  };
 
-  if (!data || !data?.words?.length) {
-    return <div className={styles.emptyState}>Нет данных для отображения.</div>;
+  if (guessedWords.length === words.length) {
+    setTimeout(() => {
+      onSuccess(true);
+    }, 1000);
   }
-  const { words } = data;
-  const letters = getMinimalLetters(words);
 
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.title}>Уровень {level}</h1>
       <div className={styles.wordsContainer}>
         {words.map((word) => (
-          <Word word={word} isGuessed={false} />
+          <Word word={word} isGuessed={guessedWords.includes(word)} />
         ))}
       </div>
-      <LetterBoard letters={letters} />
+      <LetterBoard letters={letters} handleGuessWord={handleGuessWord} />
     </div>
   );
 };
