@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useMedia from 'react-use/lib/useMedia';
 import { LetterButton } from '@/components/elements/LetterButton';
 import { calculatePosition } from '@/utils/circleUtils';
@@ -7,9 +7,14 @@ import styles from './LetterBoard.module.css';
 interface LetterBoardProps {
   letters: string[];
   handleGuessWord: (v: string) => void;
+  handleWordInput: (v: string) => void;
 }
 
-export const LetterBoard = ({ letters, handleGuessWord }: LetterBoardProps) => {
+export const LetterBoard = ({
+  letters,
+  handleGuessWord,
+  handleWordInput,
+}: LetterBoardProps) => {
   const [isSelecting, setIsSelecting] = useState(false);
   const [selectedLetters, setSelectedLetters] = useState<number[]>([]);
 
@@ -59,6 +64,10 @@ export const LetterBoard = ({ letters, handleGuessWord }: LetterBoardProps) => {
     handleGuessWord(activeWord);
     setSelectedLetters([]);
   };
+
+  useEffect(() => {
+    handleWordInput(activeWord);
+  }, [activeWord, handleWordInput]);
 
   return (
     <div className={styles.wrapper} onMouseUp={handleEndSelection}>

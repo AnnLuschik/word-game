@@ -24,9 +24,18 @@
 }
 
 .wordsContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 6px;
   width: 100%;
-  margin-bottom: 38px;
+  margin-bottom: 100px;
+}
+
+.wordInput {
+  position: absolute;
+  left: 0;
+  bottom: -38px;
+  width: 100%;
+  transform: translateY(100%);
 }

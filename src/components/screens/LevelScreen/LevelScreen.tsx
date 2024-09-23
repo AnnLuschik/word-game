@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { LetterBoard } from '@/components/modules/LetterBoard';
 import { Word } from '@/components/modules/Word';
 import { getMinimalLetters } from '@/utils/getMinimalLetters';
@@ -12,6 +12,7 @@ interface LevelScreenProps {
 
 export const LevelScreen = ({ level, words, onSuccess }: LevelScreenProps) => {
   const [guessedWords, setGuessedWords] = useState<string[]>([]);
+  const [currentWord, setCurrentWord] = useState<string>('');
 
   const letters = useMemo(() => getMinimalLetters(words), [words]);
 
@@ -20,6 +21,10 @@ export const LevelScreen = ({ level, words, onSuccess }: LevelScreenProps) => {
       setGuessedWords((prev) => [...prev, word]);
     }
   };
+
+  const handleWordInput = useCallback((inputWord: string) => {
+    setCurrentWord(inputWord);
+  }, []);
 
   if (guessedWords.length === words.length) {
     setTimeout(() => {
@@ -43,8 +48,15 @@ export const LevelScreen = ({ level, words, onSuccess }: LevelScreenProps) => {
             isGuessed={guessedWords.includes(word)}
           />
         ))}
+        <div className={styles.wordInput}>
+          <Word word={currentWord} variant='input' />
+        </div>
       </div>
-      <LetterBoard letters={letters} handleGuessWord={handleGuessWord} />
+      <LetterBoard
+        letters={letters}
+        handleGuessWord={handleGuessWord}
+        handleWordInput={handleWordInput}
+      />
     </div>
   );
 };
