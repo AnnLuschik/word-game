@@ -37,7 +37,11 @@ export const LevelScreen = ({ level, words, onSuccess }: LevelScreenProps) => {
       <h1 className={styles.title}>Уровень {level}</h1>
       <div className={styles.wordsContainer}>
         {sortedWords.map((word) => (
-          <Word word={word} isGuessed={guessedWords.includes(word)} />
+          <Word
+            key={word}
+            word={word}
+            isGuessed={guessedWords.includes(word)}
+          />
         ))}
       </div>
       <LetterBoard letters={letters} handleGuessWord={handleGuessWord} />
