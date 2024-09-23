@@ -16,7 +16,9 @@ export const LevelScreen = ({ level, words, onSuccess }: LevelScreenProps) => {
   const letters = useMemo(() => getMinimalLetters(words), [words]);
 
   const handleGuessWord = (word: string) => {
-    setGuessedWords((prev) => [...prev, word]);
+    if (words.includes(word)) {
+      setGuessedWords((prev) => [...prev, word]);
+    }
   };
 
   if (guessedWords.length === words.length) {
