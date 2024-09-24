@@ -7,7 +7,10 @@ import './App.css';
 const getLevelForFetch = (level: number) => ((level - 1) % 3) + 1;
 
 function App() {
-  const [currentLevel, setCurrentLevel] = useState(1);
+  const [currentLevel, setCurrentLevel] = useState<number>(() => {
+    const savedLevel = localStorage.getItem('currentLevel');
+    return savedLevel ? parseInt(savedLevel, 10) : 1;
+  });
   const [success, setSuccess] = useState<boolean>(false);
 
   const { data, error, loading } = useLevelData(getLevelForFetch(currentLevel));
@@ -25,8 +28,11 @@ function App() {
   }
 
   const openNewLevel = () => {
-    setCurrentLevel((prev) => prev + 1);
+    const nextLevel = currentLevel + 1;
+    setCurrentLevel(nextLevel);
     setSuccess(false);
+    localStorage.setItem('currentLevel', String(nextLevel));
+    localStorage.removeItem('savedWords');
   };
 
   return (

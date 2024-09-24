@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { LetterBoard } from '@/components/modules/LetterBoard';
 import { Word } from '@/components/modules/Word';
 import { getMinimalLetters } from '@/utils/getMinimalLetters';
@@ -11,14 +11,19 @@ interface LevelScreenProps {
 }
 
 export const LevelScreen = ({ level, words, onSuccess }: LevelScreenProps) => {
-  const [guessedWords, setGuessedWords] = useState<string[]>([]);
+  const [guessedWords, setGuessedWords] = useState<string[]>(() => {
+    const savedWords = localStorage.getItem('savedWords');
+    return savedWords ? JSON.parse(savedWords) : [];
+  });
   const [currentWord, setCurrentWord] = useState<string>('');
 
   const letters = useMemo(() => getMinimalLetters(words), [words]);
 
   const handleGuessWord = (word: string) => {
     if (words.includes(word)) {
-      setGuessedWords((prev) => [...prev, word]);
+      const updatedGuessedWords = [...guessedWords, word];
+      setGuessedWords(updatedGuessedWords);
+      localStorage.setItem('savedWords', JSON.stringify(updatedGuessedWords));
     }
   };
 
@@ -26,11 +31,13 @@ export const LevelScreen = ({ level, words, onSuccess }: LevelScreenProps) => {
     setCurrentWord(inputWord);
   }, []);
 
-  if (guessedWords.length === words.length) {
-    setTimeout(() => {
-      onSuccess(true);
-    }, 1000);
-  }
+  useEffect(() => {
+    if (guessedWords.length === words.length) {
+      setTimeout(() => {
+        onSuccess(true);
+      }, 1000);
+    }
+  }, [guessedWords, words.length, onSuccess]);
 
   const sortedWords = useMemo(
     () => words.sort((a, b) => a.length - b.length),
