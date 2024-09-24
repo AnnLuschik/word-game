@@ -16,7 +16,7 @@ export const SuccessScreen = ({ level, onClick }: SuccessScreenProps) => {
         </p>
       </div>
 
-      <Button text={`Уровень ${level + 1}`} onClick={onClick} />
+      <Button onClick={onClick}>{`Уровень ${level + 1}`}</Button>
     </div>
   );
 };

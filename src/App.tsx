@@ -83,7 +83,7 @@ function App() {
               Похоже, игра открыта в нескольких вкладках браузера. Чтобы
               продолжить играть в этой вкладке, обновите страницу.
             </p>
-            <Button text='Обновить' onClick={reloadPage} />
+            <Button onClick={reloadPage}>Обновить</Button>
           </div>
         </div>
       )}

@@ -1,15 +1,15 @@
+import { ReactNode } from 'react';
 import styles from './Button.module.css';
 
-interface ButtonProps {
-  text: string;
-  onClick: () => void;
-  type?: 'submit' | 'button';
+interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
+  type?: 'submit' | 'button' | 'reset';
+  children?: ReactNode;
 }
 
-export const Button = ({ text, type = 'button', onClick }: ButtonProps) => {
+export const Button = ({ type = 'button', children, ...rest }: ButtonProps) => {
   return (
-    <button type={type} onClick={onClick} className={styles.button}>
-      {text}
+    <button type={type} {...rest} className={styles.button}>
+      {children}
     </button>
   );
 };
